@@ -1,30 +1,14 @@
-# POST, GET 
-#http://127.0.0.1:500/theChallenge?name=Sergio&last=Ruiz
-from model import BoidFlockers, CarsBehaivour
 import mesa
+
+from model import CarBehaivour
 from SimpleContinuousModule import SimpleCanvas
 
 
-from flask import Flask, request
-app = Flask(__name__)
-
-import json
-
-#boids = BoidFlockers()
-boids = CarsBehaivour()
-
-
-
-
-@app.route('/dots', methods = ['GET'])
-def launchDots():
-    dotsServer.launch()
-
-def dots():
+def car(agent):
     return {"Shape": "circle", "r": 2, "Filled": "true", "Color": "Red"}
 
 
-boid_canvas = SimpleCanvas(dots, 500, 500)
+boid_canvas = SimpleCanvas(car, 500, 500)
 model_params = {
     "population": 5,
     "width": 100,
@@ -34,44 +18,10 @@ model_params = {
     "separation": 2,
 }
 
-dotsServer = mesa.visualization.ModularServer(
-    CarsBehaivour, [boid_canvas], "Boids", model_params
+server = mesa.visualization.ModularServer(
+    CarBehaivour, [boid_canvas], "Boids", model_params
 )
 
-
-
-#---------------------------aaaaasassdsefkjsrngjnjsrng--------------------------------------
-
-
-
-
-""" 
-@app.route('/theChallenge', methods = ['POST', 'GET'])
-def theChallenge():
-    if request.method == 'POST':
-        name = request.args.get('name')
-        boids.step()
-        p2 = boids.getPositions()
-        return "('positions :'" + str(arraysToJSON(p2)) +")"
-    
-
-
-    
-
-
-def arraysToJSON(ar):
-    result = []
-    for i in ar:
-        temp = []
-        temp.append(i[0])
-        temp.append(i[1])
-        result.append(json.dumps(temp))
-        #resultStr = str(result)
-    return result    
-
-"""
-
-
 if __name__ == '__main__':
-    dotsServer.launch(open_browser=True)
+    server.launch(open_browser=True)
     
